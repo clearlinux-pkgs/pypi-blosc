@@ -7,17 +7,17 @@
 #
 Name     : pypi-blosc
 Version  : 1.11.2
-Release  : 1
+Release  : 2
 URL      : https://files.pythonhosted.org/packages/0b/11/c684c09ac3f4e75691bfc7827dd23743bcf30b35751697278c614332700e/blosc-1.11.2.tar.gz
 Source0  : https://files.pythonhosted.org/packages/0b/11/c684c09ac3f4e75691bfc7827dd23743bcf30b35751697278c614332700e/blosc-1.11.2.tar.gz
 Summary  : Blosc data compressor
 Group    : Development/Tools
 License  : BSD-3-Clause BSL-1.0 MIT Zlib
-Requires: pypi-blosc-lib = %{version}-%{release}
 Requires: pypi-blosc-license = %{version}-%{release}
 Requires: pypi-blosc-python = %{version}-%{release}
 Requires: pypi-blosc-python3 = %{version}-%{release}
 BuildRequires : buildreq-distutils3
+BuildRequires : c-blosc-dev
 BuildRequires : cmake
 BuildRequires : ninja
 BuildRequires : pypi(ninja)
@@ -36,26 +36,6 @@ Python-Blosc
 ============
 A Python wrapper for the extremely fast Blosc compression library
 =================================================================
-
-%package dev
-Summary: dev components for the pypi-blosc package.
-Group: Development
-Requires: pypi-blosc-lib = %{version}-%{release}
-Provides: pypi-blosc-devel = %{version}-%{release}
-Requires: pypi-blosc = %{version}-%{release}
-
-%description dev
-dev components for the pypi-blosc package.
-
-
-%package lib
-Summary: lib components for the pypi-blosc package.
-Group: Libraries
-Requires: pypi-blosc-license = %{version}-%{release}
-
-%description lib
-lib components for the pypi-blosc package.
-
 
 %package license
 Summary: license components for the pypi-blosc package.
@@ -85,25 +65,19 @@ Requires: pypi(numpy)
 python3 components for the pypi-blosc package.
 
 
-%package staticdev
-Summary: staticdev components for the pypi-blosc package.
-Group: Default
-Requires: pypi-blosc-dev = %{version}-%{release}
-
-%description staticdev
-staticdev components for the pypi-blosc package.
-
-
 %prep
 %setup -q -n blosc-1.11.2
 cd %{_builddir}/blosc-1.11.2
 
 %build
+## build_prepend content
+export CMAKE_ARGS="-D USE_SYSTEM_BLOSC=ON"
+## build_prepend end
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1729302676
+export SOURCE_DATE_EPOCH=1729494417
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -155,18 +129,6 @@ echo ----[ mark ]----
 %files
 %defattr(-,root,root,-)
 
-%files dev
-%defattr(-,root,root,-)
-/usr/include/blosc-export.h
-/usr/include/blosc.h
-/usr/lib64/libblosc.so
-/usr/lib64/pkgconfig/blosc.pc
-
-%files lib
-%defattr(-,root,root,-)
-/usr/lib64/libblosc.so.1
-/usr/lib64/libblosc.so.1.21.6
-
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/pypi-blosc/0d45aa696e5c82d8d1a1a1bbdc55d8e5fc328ccc
@@ -184,7 +146,3 @@ echo ----[ mark ]----
 %files python3
 %defattr(-,root,root,-)
 /usr/lib/python3*/*
-
-%files staticdev
-%defattr(-,root,root,-)
-/usr/lib64/libblosc.a
