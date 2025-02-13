@@ -7,7 +7,7 @@
 #
 Name     : pypi-blosc
 Version  : 1.11.2
-Release  : 3
+Release  : 4
 URL      : https://files.pythonhosted.org/packages/0b/11/c684c09ac3f4e75691bfc7827dd23743bcf30b35751697278c614332700e/blosc-1.11.2.tar.gz
 Source0  : https://files.pythonhosted.org/packages/0b/11/c684c09ac3f4e75691bfc7827dd23743bcf30b35751697278c614332700e/blosc-1.11.2.tar.gz
 Summary  : Blosc data compressor
